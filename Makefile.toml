@@ -1,0 +1,28 @@
+[tasks.meson_setup]
+command = "meson"
+args = ["setup", "build", "--reconfigure"]
+
+[tasks.meson_compile]
+command = "meson"
+args = ["compile", "-C", "build"]
+
+[tasks.cargo_fmt]
+command = "cargo"
+args = ["fmt", "--verbose"]
+
+[tasks.cargo_run]
+command = "cargo"
+args = ["run"]
+dependencies = [
+    "meson_setup", 
+    "meson_compile", 
+    "cargo_fmt"
+]
+
+[tasks.my_flow]
+dependencies = [
+    "meson_setup",
+    "meson_compile",
+    "cargo_fmt",
+    "cargo_run"
+]
