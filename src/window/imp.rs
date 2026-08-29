@@ -13,6 +13,8 @@ use {
 #[template(resource = "/org/gtk_rs/Diagrams/window.ui")]
 pub struct Window {
     pub settings: OnceCell<Settings>,
+    #[template_child]
+    pub grid: TemplateChild<panel::Grid>,
 }
 
 #[gtk::template_callbacks]

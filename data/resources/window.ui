@@ -9,18 +9,13 @@
         <property name="default-width">1400</property>
         <property name="default-height">900</property>
 
-        <style>
-      <class name="devel"/>
-    </style>
+        <style><class name="devel"/></style>
 
-        <child>
-            <object class="GtkBox">
-                <property name="orientation">vertical</property>
+        <property name="content">
 
-                <!-- HEADER -->
-
-                <child>
-                    <object class="GtkHeaderBar" id="headerbar">
+            <object class="AdwToolbarView">
+                <child type="top">
+                    <object class="AdwHeaderBar">
 
                         <!-- Application menu -->
                         <child type="start">
@@ -38,24 +33,12 @@
                                 <property name="menu-model">new_menu</property>
                             </object>
                         </child>
-
+                        
+                        <!-- Left panel toggle -->
                         <child type="start">
                             <object class="PanelToggleButton">
                                 <property name="dock">dock</property>
                                 <property name="area">start</property>
-                            </object>
-                        </child>
-
-                        <!-- Center toolbar -->
-                        <child type="title">
-                            <object class="GtkCenterBox">
-
-                                <child type="center">
-                                    <object class="GtkBox">
-                                        <property name="spacing">4</property>
-                                    </object>
-                                </child>
-
                             </object>
                         </child>
 
@@ -66,73 +49,52 @@
                                 <property name="area">end</property>
                             </object>
                         </child>
-
-
                     </object>
                 </child>
 
-
-                <!-- MAIN DOCK -->
-
-                <child>
-                    <object class="PanelDock" id="dock">
-
-                        <property name="reveal-start">true</property>
-                        <property name="reveal-end">false</property>
-
-
-                        <property name="start-width">280</property>
-                        <property name="end-width">300</property>
-
-                        <property name="vexpand">true</property>
-
-
-                        <!-- CENTER CANVAS -->
-
+                <property name="content">
+                    <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        
+                        <!-- MAIN DOCK -->
                         <child>
-                            <object class="PanelGrid" id="grid">
-                                <signal name="create-frame" handler="create_frame_cb" />
-                            </object>
-                        </child>
+                            <object class="PanelDock" id="dock">
+                                <property name="reveal-start">true</property>
+                                <property name="reveal-end">false</property>
 
 
-                        <!-- LEFT SIDEBAR -->
+                                <property name="start-width">280</property>
+                                <property name="end-width">300</property>
 
-                        <child type="start">
-                            <object class="PanelPaned">
-                                <property name="orientation">vertical</property>
+                                <property name="vexpand">true</property>
 
-                                <!-- Shape Libraries -->
+
+                                <!-- CENTER CANVAS -->
+
                                 <child>
-                                    <object class="PanelFrame">
-
-                                        <child>
-                                            <object class="PanelWidget">
-                                                <property name="title">Shapes</property>
-                                                <!-- <property name="can-maximize">true</property> -->
-                                            </object>
-                                        </child>
-
+                                    <object class="PanelGrid" id="grid">
+                                        <signal name="create-frame" handler="create_frame_cb" swapped="true" />
                                     </object>
                                 </child>
 
-                            </object>
-                        </child>
 
+                                <!-- LEFT SIDEBAR -->
 
-                        <!-- RIGHT INSPECTOR -->
+                                <child type="start">
+                                    <object class="PanelPaned">
+                                        <property name="orientation">vertical</property>
 
-                        <child type="end">
-                            <object class="PanelPaned">
-                                <property name="orientation">vertical</property>
-
-                                <!-- Inspector -->
-                                <child>
-                                    <object class="PanelFrame">
-
+                                        <!-- Shape Libraries -->
                                         <child>
-                                            <object class="PanelWidget">
-                                                <property name="title">Properties</property>
+                                            <object class="PanelFrame">
+                                                <child>
+                                                    <object class="PanelWidget">
+                                                        <property name="title">Shapes</property>
+                                                        <property name="tooltip">Shapes</property>
+                                                        <property name="can-maximize">true</property>
+                                                        <child></child>
+                                                    </object>
+                                                </child>
 
                                             </object>
                                         </child>
@@ -140,38 +102,73 @@
                                     </object>
                                 </child>
 
+
+                                <!-- RIGHT INSPECTOR -->
+
+                                <child type="end">
+                                    <object class="PanelPaned">
+                                        <property name="orientation">vertical</property>
+
+                                        <!-- Inspector -->
+                                        <child>
+                                            <object class="PanelFrame">
+
+                                                <child>
+                                                    <object class="PanelWidget">
+                                                        <property name="title">Properties</property>
+                                                        <property name="tooltip">Properties</property>
+                                                        <property name="can-maximize">true</property>
+                                                        <child>
+                                                            <object class="GtkScrolledWindow">
+                                                                <child>
+                                                                    <object class="GtkListBox"
+                                                                        id="list_box">
+
+                                                                    </object>
+                                                                </child>
+                                                            </object>
+                                                        </child>
+                                                    </object>
+                                                </child>
+
+                                            </object>
+                                        </child>
+
+                                    </object>
+                                </child>
+
+
                             </object>
                         </child>
 
+
+                        <!-- STATUS BAR -->
+
+                        <child>
+                            <object class="PanelStatusbar">
+
+                                <!-- Coordinates -->
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label">X: 0 Y: 0</property>
+                                    </object>
+                                    
+                                </child>
+
+                                <!-- Selection -->
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label">No selection</property>
+                                    </object>
+                                </child>
+
+                            </object>
+                        </child>
 
                     </object>
-                </child>
-
-
-                <!-- STATUS BAR -->
-
-                <child>
-                    <object class="PanelStatusbar">
-
-                        <!-- Coordinates -->
-                        <child>
-                            <object class="GtkLabel">
-                                <property name="label">X: 0 Y: 0</property>
-                            </object>
-                        </child>
-
-                        <!-- Selection -->
-                        <child>
-                            <object class="GtkLabel">
-                                <property name="label">No selection</property>
-                            </object>
-                        </child>
-
-                    </object>
-                </child>
-
+                </property>
             </object>
-        </child>
+        </property>
     </template>
 
 
