@@ -1,4 +1,4 @@
-# Vizuagram
+# Diagrams
 
 > [!CAUTION]
 > Under development.
