@@ -1,4 +1,4 @@
 # Nodara
 
 > [!CAUTION]
-> Currently under development.
+> Under development.
