@@ -1,4 +1,4 @@
-# Nodara
+# Vizuagram
 
 > [!CAUTION]
 > Under development.
