@@ -4,7 +4,7 @@ use crate::window::Window;
 
 mod window;
 
-const APP_ID: &'static str = "org.gtk_rs.Nodara";
+const APP_ID: &'static str = "org.gtk_rs.Diagrams";
 
 fn main() -> glib::ExitCode {
     // Load resources from installed location
@@ -22,7 +22,7 @@ fn main() -> glib::ExitCode {
 }
 
 fn app_startup(_app: &adw::Application) {
-    libpanel::init();
+    panel::init();
 }
 
 fn build_ui(app: &adw::Application) {

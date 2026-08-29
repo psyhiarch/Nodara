@@ -4,8 +4,8 @@
   <requires lib="Adw" version="1.0"/>
   <requires lib="Panel" version="1.0"/>
 
-  <template class="Nodara" parent="AdwApplicationWindow">
-    <property name="title">Developer Diagram</property>
+  <template class="Diagrams" parent="AdwApplicationWindow">
+    <property name="title">Diagrams</property>
     <property name="default-width">1400</property>
     <property name="default-height">900</property>
 

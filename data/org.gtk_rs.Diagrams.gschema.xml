@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <schemalist>
-  <schema id="org.gtk_rs.Nodara" path="/org/gtk_rs/Nodara/">
+  <schema id="org.gtk_rs.Diagrams" path="/org/gtk_rs/Diagrams/">
     <key name="window-width" type="i">
       <default>-1</default>
       <summary>Default window width</summary>

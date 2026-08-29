@@ -10,7 +10,7 @@ use {
 
 // Object holding the state
 #[derive(CompositeTemplate, Default, Debug)]
-#[template(resource = "/org/gtk_rs/Nodara/window.ui")]
+#[template(resource = "/org/gtk_rs/Diagrams/window.ui")]
 pub struct Window {
     pub settings: OnceCell<Settings>,
 }
@@ -25,7 +25,7 @@ impl Window {
     // }
 
     #[template_callback]
-    fn create_frame_cb(&self, _dock: &libpanel::Dock) -> Option<libpanel::Frame> {
+    fn create_frame_cb(&self, _dock: &panel::Dock) -> Option<panel::Frame> {
         // Return None to use libpanel's default fallback frame creation behavior,
         // or return a custom panel::Frame if you want to customize it.
         None
@@ -36,7 +36,7 @@ impl Window {
 #[glib::object_subclass]
 impl ObjectSubclass for Window {
     // `NAME` needs to match `class` attribute of template
-    const NAME: &'static str = "Nodara";
+    const NAME: &'static str = "Diagrams";
     type Type = super::Window;
     type ParentType = adw::ApplicationWindow;
 
