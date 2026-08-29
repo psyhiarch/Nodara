@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="Adw" version="1.0"/>
+  <requires lib="Panel" version="1.0"/>
+
+  <template class="Diagrams" parent="AdwApplicationWindow">
+    <property name="title">Diagrams</property>
+    <property name="default-width">1400</property>
+    <property name="default-height">900</property>
+
+    <style>
+      <class name="devel"/>
+    </style>
+
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+
+        <!-- HEADER -->
+   
+        <child>
+          <object class="GtkHeaderBar" id="headerbar">
+
+            <!-- Application menu -->
+            <child type="start">
+              <object class="GtkMenuButton">
+                <property name="icon-name">open-menu-symbolic</property>
+                <property name="menu-model">window_menu</property>
+              </object>
+            </child>
+
+            <!-- New -->
+            <child type="start">
+              <object class="GtkMenuButton">
+                <property name="icon-name">list-add-symbolic</property>
+                <property name="tooltip-text">New Diagram</property>
+                <property name="menu-model">new_menu</property>
+              </object>
+            </child>
+
+            <!-- Undo / Redo -->
+            <child type="start">
+              <object class="GtkBox">
+                <property name="spacing">2</property>
+
+                <child>
+                  <object class="GtkButton">
+                    <property name="icon-name">edit-undo-symbolic</property>
+                    <property name="tooltip-text">Undo</property>
+                  </object>
+                </child>
+
+                <child>
+                  <object class="GtkButton">
+                    <property name="icon-name">edit-redo-symbolic</property>
+                    <property name="tooltip-text">Redo</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+            <!-- Center toolbar -->
+            <child type="title">
+              <object class="GtkCenterBox">
+
+                <child type="center">
+                  <object class="GtkBox">
+                    <property name="spacing">4</property>
+
+                    <!-- Selection -->
+                    <!-- <child>
+                      <object class="GtkToggleButton">
+                        <property name="icon-name">tool-pointer-symbolic</property>
+                        <property name="tooltip-text">Select</property>
+                        <property name="active">true</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Hand -->
+                    <!-- <child>
+                      <object class="GtkToggleButton">
+                        <property name="icon-name">tool-hand-symbolic</property>
+                        <property name="tooltip-text">Pan Canvas</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Connector -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">tool-connector-symbolic</property>
+                        <property name="tooltip-text">Connector</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Text -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">format-text-symbolic</property>
+                        <property name="tooltip-text">Text</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Separator -->
+                    <!-- <child>
+                      <object class="GtkSeparator"/>
+                    </child> -->
+
+                    <!-- Zoom out -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">zoom-out-symbolic</property>
+                        <property name="tooltip-text">Zoom Out</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Zoom -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="label">100%</property>
+                        <property name="tooltip-text">Zoom</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Zoom in -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">zoom-in-symbolic</property>
+                        <property name="tooltip-text">Zoom In</property>
+                      </object>
+                    </child> -->
+
+                    <!-- Fit -->
+                    <!-- <child>
+                      <object class="GtkButton">
+                        <property name="icon-name">zoom-fit-best-symbolic</property>
+                        <property name="tooltip-text">Fit Diagram</property>
+                      </object>
+                    </child> -->
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+            <!-- Export -->
+            <!-- <child type="end">
+              <object class="GtkMenuButton">
+                <property name="icon-name">document-save-symbolic</property>
+                <property name="tooltip-text">Export Diagram</property>
+                <property name="menu-model">export_menu</property>
+              </object>
+            </child> -->
+
+            <!-- Share -->
+            <!-- <child type="end">
+              <object class="GtkButton">
+                <property name="icon-name">emblem-shared-symbolic</property>
+                <property name="tooltip-text">Share Diagram</property>
+              </object>
+            </child> -->
+
+            <!-- Right panel toggle -->
+            <child type="end">
+              <object class="PanelToggleButton">
+                <property name="dock">dock</property>
+                <property name="area">end</property>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+
+        <!-- MAIN DOCK -->
+
+        <child>
+          <object class="PanelDock" id="dock">
+
+            <property name="reveal-start">true</property>
+            <property name="reveal-end">true</property>
+            <property name="reveal-bottom">true</property>
+
+            <property name="start-width">280</property>
+            <property name="end-width">300</property>
+
+            <property name="vexpand">true</property>
+
+
+            <!-- CENTER CANVAS -->
+
+            <child>
+              <object class="PanelGrid" id="grid">
+                <signal name="create-frame" handler="create_frame_cb"/>
+              </object>
+            </child>
+
+
+            <!-- LEFT SIDEBAR -->
+
+            <child type="start">
+              <object class="PanelPaned">
+                <property name="orientation">vertical</property>
+
+                <!-- Shape Libraries -->
+                <child>
+                  <object class="PanelFrame">
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Shapes</property>
+                        <property name="icon-name">shape-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Architecture</property>
+                        <property name="icon-name">network-server-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">UML</property>
+                        <property name="icon-name">applications-development-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Flowchart</property>
+                        <property name="icon-name">view-list-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Database</property>
+                        <property name="icon-name">drive-harddisk-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Cloud</property>
+                        <property name="icon-name">weather-overcast-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Network</property>
+                        <property name="icon-name">network-wired-symbolic</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+
+                <!-- Diagram Navigator -->
+                <child>
+                  <object class="PanelFrame">
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Pages</property>
+                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Outline</property>
+                        <property name="icon-name">view-list-symbolic</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+
+            <!-- RIGHT INSPECTOR -->
+
+            <child type="end">
+              <object class="PanelPaned">
+                <property name="orientation">vertical</property>
+
+                <!-- Inspector -->
+                <child>
+                  <object class="PanelFrame">
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Inspector</property>
+                        <property name="icon-name">preferences-system-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Properties</property>
+                        <property name="icon-name">document-properties-symbolic</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+
+                <!-- Style -->
+                <child>
+                  <object class="PanelFrame">
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Style</property>
+                        <property name="icon-name">applications-graphics-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Colors</property>
+                        <property name="icon-name">color-select-symbolic</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Text</property>
+                        <property name="icon-name">format-text-symbolic</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+
+                <!-- Arrange -->
+                <child>
+                  <object class="PanelFrame">
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Arrange</property>
+                        <property name="icon-name">format-justify-fill-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Align</property>
+                      </object>
+                    </child>
+
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Distribute</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+
+            <!-- BOTTOM PANEL -->
+
+            <child type="bottom">
+              <object class="PanelPaned">
+                <property name="orientation">horizontal</property>
+
+                <child>
+                  <object class="PanelFrame">
+                    <property name="orientation">horizontal</property>
+
+                    <!-- Layers -->
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Layers</property>
+                        <property name="icon-name">view-list-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <!-- Navigator -->
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Navigator</property>
+                        <property name="icon-name">zoom-fit-best-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <!-- Notes -->
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Notes</property>
+                        <property name="icon-name">accessories-text-editor-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                    <!-- Developer Console -->
+                    <child>
+                      <object class="PanelWidget">
+                        <property name="title">Developer Console</property>
+                        <property name="icon-name">utilities-terminal-symbolic</property>
+                        <property name="can-maximize">true</property>
+                      </object>
+                    </child>
+
+                  </object>
+                </child>
+
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+
+        <!-- STATUS BAR -->
+
+        <child>
+          <object class="PanelStatusbar">
+
+            <!-- Coordinates -->
+            <child>
+              <object class="GtkLabel">
+                <property name="label">X: 0   Y: 0</property>
+              </object>
+            </child>
+
+            <!-- Selection -->
+            <child>
+              <object class="GtkLabel">
+                <property name="label">No selection</property>
+              </object>
+            </child>
+
+            <!-- Spacer -->
+            <child>
+              <object class="GtkLabel">
+                <property name="hexpand">true</property>
+              </object>
+            </child>
+
+            <!-- Grid -->
+            <child type="suffix">
+              <object class="GtkToggleButton">
+                <property name="label">Grid</property>
+                <property name="active">true</property>
+              </object>
+            </child>
+
+            <!-- Snap -->
+            <child type="suffix">
+              <object class="GtkToggleButton">
+                <property name="label">Snap</property>
+                <property name="active">true</property>
+              </object>
+            </child>
+
+            <!-- Page -->
+            <child type="suffix">
+              <object class="GtkLabel">
+                <property name="label">Page 1 / 1</property>
+              </object>
+            </child>
+
+            <!-- Zoom -->
+            <child type="suffix">
+              <object class="GtkMenuButton">
+                <property name="direction">up</property>
+
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">100%</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+
+          </object>
+        </child>
+
+      </object>
+    </child>
+  </template>
+
+
+  <!-- MENUS -->
+
+  <menu id="new_menu">
+    <section>
+      <attribute name="label">Diagram</attribute>
+
+      <item>
+        <attribute name="label">Blank Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Flowchart</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">UML Class Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Sequence Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Entity Relationship Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Network Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Architecture Diagram</attribute>
+      </item>
+    </section>
+  </menu>
+
+
+  <menu id="export_menu">
+    <section>
+      <attribute name="label">Export</attribute>
+
+      <item>
+        <attribute name="label">PNG Image</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">SVG Image</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">PDF Document</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">JPEG Image</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name="label">Export Source</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Export Mermaid</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Export PlantUML</attribute>
+      </item>
+    </section>
+  </menu>
+
+
+  <menu id="window_menu">
+
+    <section>
+      <item>
+        <attribute name="label">New Window</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Open Diagram…</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Save Diagram</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Save As…</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name="label">Import</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Export</attribute>
+      </item>
+    </section>
+
+    <section>
+      <item>
+        <attribute name="label">Preferences</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Keyboard Shortcuts</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">Help</attribute>
+      </item>
+
+      <item>
+        <attribute name="label">About Developer Diagram</attribute>
+      </item>
+    </section>
+
+  </menu>
+
+</interface>
